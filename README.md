@@ -11,6 +11,19 @@ Then set a single `GONFIG_ENV` environment variable matching a file available in
 
 ### API
 
+#### Setup
+
+```golang
+// Set the folder hosting your config files (by default "gonfig/")
+func SetFolder(pathname string) {}
+
+// Set the base config file to use (by default "base.gonf")
+func SetBaseFile(filename string) {}
+
+// Set the override file to use (by default `dev.gonf` or GONF_ENV)
+func UseFile(filename string) {}
+```
+
 #### Get configuration
 
 ```golang
@@ -19,6 +32,9 @@ func Get(key string) string {}
 
 // Retrieve many values
 func GetMany(key []string) []string {}
+
+// Retrieve all values
+func GetAll() []string {}
 ```
 
 #### Preload
@@ -38,13 +54,13 @@ func PreloadAll() error {}
 ##### Load and validate a file as a value
 ```golang
 // Get a file content or empty string ("") if missing
-func GetFile(key string) string {}
+func GetFileContent(key string) string {}
 
 // Get a file content or `def` if missing
-func GetFileOrDefault(key string, def string) string {}
+func GetFileContentOrDefault(key string, def string) string {}
 
 // Get a file content or panic with appropriate message if missing
-func GetFileOrPanic(key string) string {}
+func GetFileContentOrPanic(key string) string {}
 ```
 
 ##### Load and validate an env variable

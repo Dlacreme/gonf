@@ -1,80 +1,36 @@
 // Provide a quick & easy way to load & use your configuration
 package gonf
 
-import (
-	"fmt"
-	"path/filepath"
-)
+import "fmt"
 
-// If not set, default folder is "config"
-var folder_pathname = "config"
-
-// If not set, default root config file is "config.gonf"
-var root_config = "config.gonf"
-
-// If not set, default file loaded is "dev.gonf"
-var current_config = "dev.gonf"
-
-// Cached loaded key/value
-var cache map[string]string = make(map[string]string)
-
-func SetFolder(pathname string) {
-	folder_pathname = pathname
-}
-
-func Use(envName string) {
-	current_config = fmt.Sprintf("%s.gonf", envName)
-}
-
-func LoadMany(keys []string) {
-	for _, k := range keys {
-		Get(k)
-	}
-}
-
-func Load(key string) {
-	Get(key)
-}
-
+// Retrieve a single value
 func Get(key string) string {
-	// load from cache if available
-	if v, ok := cache[key]; ok {
-		return v
+	return GetMany([]string{key})[0]
+}
+
+// Retrieve many values
+func GetMany(key []string) []string {
+	return []string{""}
+}
+
+// Retrieve all values
+func GetAll() []string {
+	root := fetchFromFile(buildRootFilename(), []string{})
+	env := fetchFromFile(buildFilenameForEnv(), []string{})
+	printCompare(root, env)
+	return []string{""}
+}
+
+func printCompare(root []Set, env []Set) {
+	fmt.Println("ROOT >")
+	printArraySet(root)
+	fmt.Println("ENV >")
+	printArraySet(env)
+
+}
+
+func printArraySet(a []Set) {
+	for v, k := range a {
+		fmt.Printf("KEY[%s] VALUE[%s]\n", v, k)
 	}
-	// load from env config file if available
-	tree, err := fileToTree(buildFilenameForEnv())
-	if err != nil {
-		fmt.Printf("ERROR ! > %s\n", err)
-		return ""
-	}
-	printTree(tree)
-	// if rawValue == "" {
-	// // backup on root config
-	// rawValue = fileToTree(buildRootFilename(), key)
-	// }
-	// parse & consume value
-	//	value, err := interpretValue(rawValue)
-	//if err != nil {
-	//// the value is invalid
-	//return ""
-	//}
-	//// all good. Save in cache and return
-	//pushCache(key, value)
-	return ""
-}
-
-func interpretValue(rawValue string) (string, error) {
-	return rawValue, nil
-}
-
-func pushCache(key string, value string) {
-	cache[key] = value
-}
-
-func buildFilenameForEnv() string {
-	return filepath.Join(folder_pathname, current_config)
-}
-
-func buildRootFilename() string {
-	return filepath.Join(folder_pathname, root_config)
 }
