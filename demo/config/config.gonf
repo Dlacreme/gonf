@@ -1,0 +1,12 @@
+server:
+    hostname: 'localhost'
+    port: '5000'
+
+grpc:
+    host: 'localhost:2043'
+    cert: file!('cert.crt')
+
+smtp:
+    host: env?('SMTP_HOST', 'xxxxxxxxx')
+    username: _
+    password: !
