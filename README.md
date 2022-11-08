@@ -18,10 +18,10 @@ Then set a single `GONFIG_ENV` environment variable matching a file available in
 func SetFolder(pathname string) {}
 
 // Set the base config file to use (by default "base.gonf")
-func SetBaseFile(filename string) {}
+func SetBase(filename string) {}
 
 // Set the override file to use (by default `dev.gonf` or GONF_ENV)
-func UseFile(filename string) {}
+func Use(filename string) {}
 ```
 
 #### Get configuration

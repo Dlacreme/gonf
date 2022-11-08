@@ -1,0 +1,5 @@
+hostname: localhost
+cert: file!(cert.crt)
+smtp_host: env?(SMTP_HOST, xxxxxxxxx)
+smtp_username: _
+smtp_password: !

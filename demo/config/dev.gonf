@@ -1,9 +1,0 @@
-hostname: 'localhost'
-port: '5000'
-
-host: 'localhost:2043'
-cert: file!('cert.crt')
-
-smtp_host: env?('SMTP_HOST', 'xxxxxxxxx')
-smtp_username: _
-smtp_password: !

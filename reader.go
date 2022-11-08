@@ -9,7 +9,8 @@ import (
 )
 
 const REGEX_COMMENT = "#(.)*$"
-const REGEX_KEY = "^\\w*:(.)*$"
+const REGEX_KEY_VALUE = "^[0-9A-Za-z_]*:(.)*$"
+const REGEX_KEY = "^[0-9A-Za-z_]*:"
 
 func fetchFromFile(filename string, only []string) []Set {
 	scanner, err := fileAsScanner(filename)
@@ -55,9 +56,11 @@ func cleanLine(line string) string {
 }
 
 func lineToSetUsingRegexp(r *regexp.Regexp, line string) Set {
+	k := fetchKeyUsingRegexp(r, line)
+	v := fetchRawValueUsingRegexp(r, line)
 	return Set{
-		Key:      fetchKeyUsingRegexp(r, line),
-		RawValue: fetchRawValueUsingRegexp(r, line),
+		Key:      strings.Trim(k, " "),
+		RawValue: strings.Trim(v, " "),
 	}
 }
 
@@ -74,11 +77,10 @@ func isWildcard(only []string) bool {
 	return len(only) == 0
 }
 
-func buildFilters(only []string) map[string]*bool {
-	filters := make(map[string]*bool)
+func buildFilters(only []string) map[string]bool {
+	filters := make(map[string]bool)
 	for _, v := range only {
-		filters[v] = nil
+		filters[v] = true
 	}
-
 	return filters
 }

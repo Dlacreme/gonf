@@ -9,4 +9,4 @@ demo:
 
 .PHONY: test
 test:
-	go test gonf/...
+	go test -v
